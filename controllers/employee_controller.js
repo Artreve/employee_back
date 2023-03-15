@@ -1,18 +1,22 @@
-const model = require("../models/employee");
+const model = require("../models/asset");
 const HttpError = require("../models/error");
 
 //--FILTRAO GENERAL--
-const getAllEmployees = async (req, res, next) => {
-  const empleados = await model.getAllEmployeesModel();
+const getAllAssets = async (req, res) => {
+  const empleados = await model.getAllAssetsModel();
 
   res.json({ data: empleados });
 };
 
+const getAssetByEmployeeId = async (req, res) => {
+  const assets = await model.getAssetByEmployeeIdModel();
+};
+
 //--TRAER EMPLEADO POR SU ID--
-const getEmployeesById = async (req, res, next) => {
+const getAssetsById = async (req, res, next) => {
   try {
     const userId = req.params.eid;
-    const user = await model.getEmployeeByIdModel(userId);
+    const user = await model.getAssetByIdModel(userId);
     res.json({ menssage: user });
   } catch (error) {
     new HttpError("Algo salio mal", 500);
@@ -20,10 +24,10 @@ const getEmployeesById = async (req, res, next) => {
 };
 
 //--CREAR EMPLEADO--
-const createEmployee = async (req, res) => {
+const createAsset = async (req, res) => {
   try {
-    const values = {...req.body}; //--Traemos valores del cuerpo
-    const result = await model.createEmployeeModel(values);
+    const values = { ...req.body }; //--Traemos valores del cuerpo
+    const result = await model.createAssetModel(values);
     res.json({ data: result, messaje: "Usuario Creado" });
   } catch (error) {
     new HttpError("Algo salio mal", 500);
@@ -31,31 +35,35 @@ const createEmployee = async (req, res) => {
 };
 
 //--ACTUALIZAR EMPLEADO--
-const updateEmployee = async (req, res) => {
+const updateAsset = async (req, res) => {
   try {
     const userId = req.params.eid;
-    const values = {...req.body};
-    const result = await model.updateEmployeeModel(userId,values)
-    res.json({result, messaje: `El usuario con el id ${userId} se actualizó exitosamente`})
+    const values = { ...req.body };
+    const result = await model.updateAssetModel(userId, values);
+    res.json({
+      result,
+      messaje: `El usuario con el id ${userId} se actualizó exitosamente`,
+    });
   } catch (error) {
     new HttpError("Algo salio mal", 500);
   }
 };
 
 //--ELIMINAR EMPLEADO--
-const deleteEmployee = async (req, res) => {
+const deleteAsset = async (req, res) => {
   try {
     const userId = req.params.eid;
-    await model.deleteEmployeeModel(userId);
+    await model.deleteAssetModel(userId);
     res.json({ messaje: `Usuario con el Id: ${userId} eliminado` });
   } catch (error) {
     new HttpError("Algo salio mal", 500);
   }
 };
 module.exports = {
-  getAllEmployees,
-  getEmployeesById,
-  createEmployee,
-  updateEmployee,
-  deleteEmployee,
+  getAllAssets,
+  getAssetsById,
+  getAssetByEmployeeId,
+  createAsset,
+  updateAsset,
+  deleteAsset,
 };

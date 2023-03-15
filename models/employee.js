@@ -22,7 +22,6 @@ const createEmployeeModel = async (values) => {
   console.log(values)
   const result = await conection.query("INSERT INTO employee(first_name, last_name, cuit, team_id,join_date,rol) values(?,?,?,?,?,?)",
       [first_name, last_name, cuit, team_id, join_date, rol]).spread((result) => result);
-    // console.log(result)
     return result
 };
 
