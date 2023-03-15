@@ -1,21 +1,49 @@
 const conection = require("../database/dbConfig");
 
+//--FILTRAO GENERAL--
 const getAllEmployeesModel = async () => {
-  const rows = await conection.query("SELECT * FROM employee").spread((rows) => rows);
+  const rows = await conection
+    .query("SELECT * FROM employee")
+    .spread((rows) => rows);
   return rows;
 };
 
-const createEmployeeModel = async (values) => {
-  const { nombre, apellido, cuit, teamId, joinDate, rol } = values;
-  await conection.query('INSERT INTO TO employee(first_name, last_name, cuit, team_id,join_date,rol values(?,?,?,?,?,?)',[nombre,apellido,cuit,teamId,joinDate,rol]).spread(result=> result)
+//--TRAER EMPLEADO POR SU ID--
+const getEmployeeByIdModel = async (id) => {
+  const row = await conection
+    .query("SELECT * FROM employee WHERE idemployee = ?", [id])
+    .spread((row) => row);
+  return row;
 };
-const updateEmployeeModel = async () => {};
+
+//--CREAR EMPLEADO--
+const createEmployeeModel = async (values) => {
+  const { first_name, last_name, cuit, team_id, join_date, rol } = values;
+  console.log(values)
+  const result = await conection.query("INSERT INTO employee(first_name, last_name, cuit, team_id,join_date,rol) values(?,?,?,?,?,?)",
+      [first_name, last_name, cuit, team_id, join_date, rol]).spread((result) => result);
+    // console.log(result)
+    return result
+};
+
+//--ACTUALIZAR EMPLEADO--
+const updateEmployeeModel = async (id, values) => {
+  const {first_name, last_name, cuit, team_id, join_date, rol} = values;
+  const sql = `UPDATE employee SET first_name=?, last_name=?, cuit=?, team_id=?, join_date=?, rol=? WHERE idemployee=${id}`;
+  const result = await conection.query(sql,[first_name, last_name, cuit, team_id, join_date, rol]).spread((result) =>result);
+  return result
+};
+
+//--ELIMINAR EMPLEADO--
 const deleteEmployeeModel = async (id) => {
- await conection.query('DELETE FROM employee WHERE IDEMPLOYEE = ?', [id]).spread(result=>result)
+  await conection
+    .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
+    .spread((result) => result);
 };
 
 module.exports = {
   getAllEmployeesModel,
+  getEmployeeByIdModel,
   createEmployeeModel,
   updateEmployeeModel,
   deleteEmployeeModel,

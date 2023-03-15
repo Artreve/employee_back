@@ -8,14 +8,20 @@ const HttpError = require('./models/error')
 
 const app  = express()
 
+//--MIDELWARE--
+app.use(express.json({ limit: '50mb' })) //Nos permite tranformar todos los valores recibidos en json 
+
 //--RUTAS--
 app.use('/api/employee',routes_employee)
+ 
+
 
 //--ERRORES--
 app.use((req, res, next) => {
     const error = new HttpError("No se encontro esta ruta", 404);
     throw next(error);
   });
+
   app.use((error, req, res, next) => {
     if (res.headerSet) {
       return next(error);

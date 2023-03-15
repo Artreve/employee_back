@@ -1,6 +1,5 @@
 //--LIBRERIAS--
-const express = require("express");
-const router = express.Router();
+const router = require('express').Router();
 
 //--DEPENDENCIAS--
 const {
@@ -15,7 +14,7 @@ const {
 router.get("/",getAllEmployees);
 router.get("/:eid",getEmployeesById);
 router.post("/",createEmployee);
-router.patch("/:eid",updateEmployee);
+router.put("/:eid",updateEmployee);
 router.delete("/:eid",deleteEmployee);
 
 module.exports = router;
