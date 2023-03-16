@@ -13,7 +13,7 @@ const getEmployeeByIdModel = async (id) => {
   const row = await conection
     .query("SELECT * FROM employee WHERE idemployee = ?", [id])
     .spread((row) => row);
-  return row;
+  return row.length>0 ?row [0]: null;
 };
 
 //--CREAR EMPLEADO--
@@ -26,10 +26,21 @@ const createEmployeeModel = async (values) => {
 };
 
 //--ACTUALIZAR EMPLEADO--
-const updateEmployeeModel = async (id, values) => {
+
+//de la busqueda que realice en el controller, debo ingresarlo aqui
+//user: valores viejos y values: valores nuevos
+const updateEmployeeModel = async (user, values) => {
   const {first_name, last_name, cuit, team_id, join_date, rol} = values;
-  const sql = `UPDATE employee SET first_name=?, last_name=?, cuit=?, team_id=?, join_date=?, rol=? WHERE idemployee=${id}`;
-  const result = await conection.query(sql,[first_name, last_name, cuit, team_id, join_date, rol]).spread((result) =>result);
+  const sql = `UPDATE employee SET first_name=?, last_name=?, cuit=?, team_id=?, join_date=?, rol=? WHERE idemployee=${user.idemployee}`;
+  const result = await conection.query(sql,[
+    first_name ? first_name:user.first_name, 
+    last_name ? last_name:user.last_name, 
+    cuit  ? cuit:user.cuit, 
+    team_id ? team_id:user.team_id, 
+    join_date ? join_date:user.join_date, 
+    rol ? rol:user.rol
+  ]).spread((result) =>result);
+
   return result
 };
 

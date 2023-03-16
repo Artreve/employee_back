@@ -1,5 +1,4 @@
 const model = require("../models/asset");
-const HttpError = require("../models/error");
 
 //--FILTRAO GENERAL--
 const getAllAssets = async (req, res) => {
@@ -20,7 +19,7 @@ const getAssetById = async (req, res, next) => {
     const asset = await model.getAssetByIdModel(assetId);
     res.json({ data: asset });
   } catch (error) {
-    new HttpError("Algo salio mal", 500);
+    next(error)
   }
 };
 
@@ -31,7 +30,7 @@ const createAsset = async (req, res) => {
     const result = await model.createAssetModel(values);
     res.json({ data: result, messaje: "Asset Creado" });
   } catch (error) {
-    new HttpError("Algo salio mal", 500);
+    next(error)
   }
 };
 
@@ -43,7 +42,7 @@ const updateAsset = async (req, res) => {
     const result = await model.updateAssetModel(assetId,values)
     res.json({result, messaje: `El asset con el id ${assetId} se actualizó exitosamente`})
   } catch (error) {
-    new HttpError("Algo salio mal", 500);
+    next(error)
   }
 };
 
@@ -54,7 +53,7 @@ const deleteAseet = async (req, res) => {
     await model.deleteAssetModel(assetId);
     res.json({ messaje: `Usuario con el Id: ${assetId} eliminado` });
   } catch (error) {
-    new HttpError("Algo salio mal", 500);
+    next(error)
   }
 };
 module.exports = {

@@ -9,12 +9,13 @@ const {
   updateEmployee,
   deleteEmployee,
 } = require("../controllers/employee_controller");
+const {validar_employee} = require('../middleware/validarEmployee')
 
 //--RUTAS--
 routes_employee.get("/",getAllEmployees);
-routes_employee.get("/:eid",getEmployeesById);
-routes_employee.post("/",createEmployee);
-routes_employee.put("/:eid",updateEmployee);
-routes_employee.delete("/:eid",deleteEmployee);
+routes_employee.get("/:id",getEmployeesById);
+routes_employee.post("/",validar_employee,createEmployee);
+routes_employee.put("/:id",updateEmployee);
+routes_employee.delete("/:id",deleteEmployee);
 
 module.exports = routes_employee;
