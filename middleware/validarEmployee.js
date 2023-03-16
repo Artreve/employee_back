@@ -18,4 +18,19 @@ const validar_employee =
     check("rol").notEmpty().withMessage("El rol es obligatorio"),
   ];
 
-module.exports = { validar_employee };
+  const validar_update = [
+    check("first_name")
+      .optional()
+      .isLength({ max: 20 }),
+    check("last_name")
+      .optional()
+      .isLength({ max: 15 }),
+    check("cuit")
+      .optional()
+      .isLength({ min: 11 }),
+    check("team_id").optional(),
+    check("join_date").optional(),
+    check("rol").optional()
+  ]
+
+module.exports = { validar_employee, validar_update };
