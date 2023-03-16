@@ -1,5 +1,5 @@
 //--LIBRERIAS--
-const router = require('express').Router();
+const routes_employee = require('express').Router();
 
 //--DEPENDENCIAS--
 const {
@@ -11,10 +11,10 @@ const {
 } = require("../controllers/employee_controller");
 
 //--RUTAS--
-router.get("/",getAllEmployees);
-router.get("/:eid",getEmployeesById);
-router.post("/",createEmployee);
-router.put("/:eid",updateEmployee);
-router.delete("/:eid",deleteEmployee);
+routes_employee.get("/",getAllEmployees);
+routes_employee.get("/:eid",getEmployeesById);
+routes_employee.post("/",createEmployee);
+routes_employee.put("/:eid",updateEmployee);
+routes_employee.delete("/:eid",deleteEmployee);
 
-module.exports = router;
+module.exports = routes_employee;

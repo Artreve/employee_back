@@ -2,18 +2,16 @@
 const express = require("express");
 
 // --DEPENDENCIAS--
-const routes_employee = require("./routes/route_employee");
-const routes_asset = require("./routes/route_asset");
+const routes = require("./routes/")
 const HttpError = require("./models/error");
 
 const app = express();
 
 //--MIDELWARE--
-app.use(express.json({ limit: "50mb" })); //Nos permite tranformar todos los valores recibidos en json
+app.use(express.json({ limit: "50mb" }));
 
 //--RUTAS--
-app.use("/api/employee", routes_employee);
-app.use("api/asset", routes_asset);
+app.use("/api", routes);
 
 //--ERRORES--
 app.use((req, res, next) => {

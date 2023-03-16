@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const asset_router = require("express").Router();
 
 const {
   getAllAssets,
@@ -10,11 +10,11 @@ const {
 } = require("../controllers/asset_controller");
 
 //--RUTAS ASSET--
-router.get("/", getAllAssets);
-router.get("/:aid", getAssetById);
-router.get("/employee/:eid", getAssetByEmployeeId)
-router.post("/", createAsset);
-router.put("/:aid", updateAsset);
-router.delete("/:aid", deleteAseet);
+asset_router.get("/", getAllAssets);
+asset_router.get("/:aid", getAssetById);
+asset_router.get("/employee/:eid", getAssetByEmployeeId)
+asset_router.post("/", createAsset);
+asset_router.put("/:aid", updateAsset);
+asset_router.delete("/:aid", deleteAseet);
 
-module.exports = router;
+module.exports = asset_router;

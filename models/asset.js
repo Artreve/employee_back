@@ -11,7 +11,7 @@ const getAssetByEmployeeIdModel = async () =>{
 
 }
 
-//--TRAER EMPLEADO POR SU ID--
+//--TRAER ASSET POR SU ID--
 const getAssetByIdModel = async (id) => {
   const row = await conection
     .query("SELECT * FROM asset WHERE idasset = ?", [id])
@@ -19,20 +19,19 @@ const getAssetByIdModel = async (id) => {
   return row;
 };
 
-//--CREAR EMPLEADO--
+//--CREAR ASSET--
 const createAssetModel = async (values) => {
   const { name, type, code, marca, description, purchase_date } = values;
-  console.log(values)
-  const result = await conection.query("INSERT INTO asset(name, type, code, marca,desciption,purchase_date) values(?,?,?,?,?,?)",
+  const result = await conection.query("INSERT INTO asset(name, type, code, marca,description,purchase_date) values(?,?,?,?,?,?)",
       [name, type, code, marca, description, purchase_date]).spread((result) => result);
     return result
 };
 
-//--ACTUALIZAR EMPLEADO--
+//--ACTUALIZAR ASSET--
 const updateAssetModel = async (id, values) => {
-  const {name, type, code, marca, description, purchase_date} = values;
-  const sql = `UPDATE asset SET name=?, type=?, code=?, marca=?, description=?, purchase_date=? WHERE idasset=${id}`;
-  const result = await conection.query(sql,[name, type, code, marca, description, purchase_date]).spread((result) =>result);
+  const {name, type, code, marca, description, purchase_date, employeeid} = values;
+  const sql = `UPDATE asset SET name=?, type=?, code=?, marca=?, description=?, purchase_date=?, employeeid = ? WHERE idasset=${id}`;
+  const result = await conection.query(sql,[name, type, code, marca, description, purchase_date, employeeid]).spread((result) =>result);
   return result
 };
 

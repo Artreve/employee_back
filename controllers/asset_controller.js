@@ -13,18 +13,18 @@ const getAssetByEmployeeId = async (req, res)=>{
   res.json({data:assets})
 }
 
-//--TRAER EMPLEADO POR SU ID--
+//--TRAER ASSET POR SU ID--
 const getAssetById = async (req, res, next) => {
   try {
     const assetId = req.params.aid;
     const asset = await model.getAssetByIdModel(assetId);
-    res.json({ menssage: asset });
+    res.json({ data: asset });
   } catch (error) {
     new HttpError("Algo salio mal", 500);
   }
 };
 
-//--CREAR EMPLEADO--
+//--CREAR ASSET--
 const createAsset = async (req, res) => {
   try {
     const values = {...req.body}; //--Traemos valores del cuerpo
@@ -41,7 +41,7 @@ const updateAsset = async (req, res) => {
     const assetId = req.params.aid;
     const values = {...req.body};
     const result = await model.updateAssetModel(assetId,values)
-    res.json({result, messaje: `El asset con el id ${assetIdId} se actualizó exitosamente`})
+    res.json({result, messaje: `El asset con el id ${assetId} se actualizó exitosamente`})
   } catch (error) {
     new HttpError("Algo salio mal", 500);
   }
