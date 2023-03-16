@@ -7,7 +7,8 @@ const NotFoundError = require("../errors/NotFoundError")
 
 //--FILTRAO GENERAL--
 const getAllEmployees = async (req, res, next) => {
-  const empleados = await model.getAllEmployeesModel();
+  const values = req.query;
+  const empleados = await model.getAllEmployeesModel(values);
 
   res.json({ data: empleados });
 };

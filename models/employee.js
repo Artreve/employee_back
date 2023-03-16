@@ -1,11 +1,34 @@
 const conection = require("../database/dbConfig");
 
 //--FILTRAO GENERAL--
-const getAllEmployeesModel = async () => {
-  const rows = await conection
-    .query("SELECT * FROM employee")
-    .spread((rows) => rows);
-  return rows;
+const getAllEmployeesModel = async (values) => {
+  const {FIRST_NAME, LAST_NAME, TEAM_ID, page = 1, pageSize = 5} = values;
+  const filters = [];
+  const values = [];
+  let query = 'SELECT * FROM employee';
+  let limitQuery = `LIMIT ${(page -1) * pageSize}, ${pageSize} `;
+  if (FIRST_NAME){
+    filters.push('first_name LIKE ?')
+    values.push(`%${FIRST_NAME}%`)
+  }
+  if (LAST_NAME){
+    filters.push('last_name LIKE ?')
+    values.push(`%${LAST_NAME}%`)
+  }
+  if (TEAM_ID){
+    filters.push('team_id LIKE ?')
+    values.push(`%${TEAM_ID}%`)
+  }
+  if (filters.length > 0) {
+    query += ' WHERE ' + filters.join(' AND ');
+  }
+
+  query += limitQuery;
+  const rows = await conection.query(query,values).spread(rows =>  rows)
+  return rows
+  //   .query("SELECT * FROM employee")
+  //   .spread((rows) => rows);
+  // return rows;
 };
 
 //--TRAER EMPLEADO POR SU ID--
