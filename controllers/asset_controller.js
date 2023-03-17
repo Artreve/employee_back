@@ -9,14 +9,16 @@ const getAllAssets = async (req, res) => {
   res.json({ data: assets });
 };
 
-const getAssetByEmployeeId = async (req, res) => {
+const getAssetByEmployeeId = async (req, res, next) => {
+  try {
   const userId = req.params.id;
-  if (!userId) {
-    getAllAssets();
-  } else {
-    const assets = await model.getAssetByEmployeeIdModel(userId);
-    res.json({ data: assets });
+  const assets = await model.getAssetByEmployeeIdModel(userId);
+  if (!assets) throw new NotFoundError("No hay articulos asignados a este empleado")
+  res.json({ data: assets });
+  } catch (error) {
+    next(error)
   }
+  
 };
 
 //--TRAER ASSET POR SU ID--
@@ -49,9 +51,9 @@ const createAsset = async (req, res) => {
 };
 
 //--ACTUALIZAR EMPLEADO--
-const updateAsset = async (req, res) => {
+const updateAsset = async (req, res,next) => {
   try {
-    const assetId = req.params.aid;
+    const assetId = req.params.id;
     const asset = await model.getAssetByIdModel(assetId);
     if (!asset) throw new NotFoundError("El Articulo no existe");
     const values = { ...req.body };
@@ -66,9 +68,9 @@ const updateAsset = async (req, res) => {
 };
 
 //--ELIMINAR EMPLEADO--
-const deleteAseet = async (req, res) => {
+const deleteAseet = async (req, res, next) => {
   try {
-    const assetId = req.params.aid;
+    const assetId = req.params.id;
     const asset = await model.getAssetByIdModel(assetId);
     if (!asset) throw new NotFoundError("El Articulo no existe");
     await model.deleteAssetModel(assetId);

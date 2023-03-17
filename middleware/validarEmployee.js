@@ -20,17 +20,17 @@ const validar_employee =
 
   const validar_update = [
     check("first_name")
-      .optional()
+      .optional().notEmpty().withMessage('El nombre debe tener un valor')
       .isLength({ max: 20 }),
     check("last_name")
-      .optional()
+      .optional().notEmpty().withMessage('El apellido quipo debe tener un valor')
       .isLength({ max: 15 }),
     check("cuit")
-      .optional()
+      .optional().notEmpty().withMessage('El cuit debe tener un valor')
       .isLength({ min: 11 }),
-    check("team_id").optional(),
-    check("join_date").optional(),
-    check("rol").optional()
+    check("team_id").optional().notEmpty().withMessage('El id de quipo debe tener un valor'),
+    check("join_date").optional().notEmpty().withMessage('Debes ingresar una fecha'),
+    check("rol").optional().notEmpty().withMessage('El rol debe tener un valor')
   ]
 
 module.exports = { validar_employee, validar_update };

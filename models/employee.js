@@ -1,34 +1,32 @@
 const conection = require("../database/dbConfig");
+const model = require('./asset')
 
 //--FILTRAO GENERAL--
-const getAllEmployeesModel = async (values) => {
-  const {FIRST_NAME, LAST_NAME, TEAM_ID, page = 1, pageSize = 5} = values;
+const getAllEmployeesModel = (values) => {
+  const {first_name, last_name, team_id, page = 1, pageSize = 5} = values;
   const filters = [];
-  const values = [];
+  const valueSql = [];
   let query = 'SELECT * FROM employee';
-  let limitQuery = `LIMIT ${(page -1) * pageSize}, ${pageSize} `;
-  if (FIRST_NAME){
+  let limitQuery = ` LIMIT ${(page - 1) * pageSize}, ${pageSize}`;
+  if (first_name){
     filters.push('first_name LIKE ?')
-    values.push(`%${FIRST_NAME}%`)
+    valueSql.push(`%${first_name}%`)
   }
-  if (LAST_NAME){
+  if (last_name){
     filters.push('last_name LIKE ?')
-    values.push(`%${LAST_NAME}%`)
+    valueSql.push(`%${last_name}%`)
   }
-  if (TEAM_ID){
+  if (team_id){
     filters.push('team_id LIKE ?')
-    values.push(`%${TEAM_ID}%`)
+    valueSql.push(`%${team_id}%`)
   }
   if (filters.length > 0) {
     query += ' WHERE ' + filters.join(' AND ');
   }
 
   query += limitQuery;
-  const rows = await conection.query(query,values).spread(rows =>  rows)
+  const rows = conection.query(query,valueSql).spread(rows =>  rows)
   return rows
-  //   .query("SELECT * FROM employee")
-  //   .spread((rows) => rows);
-  // return rows;
 };
 
 //--TRAER EMPLEADO POR SU ID--
@@ -42,7 +40,6 @@ const getEmployeeByIdModel = async (id) => {
 //--CREAR EMPLEADO--
 const createEmployeeModel = async (values) => {
   const { first_name, last_name, cuit, team_id, join_date, rol } = values;
-  console.log(values)
   const result = await conection.query("INSERT INTO employee(first_name, last_name, cuit, team_id,join_date,rol) values(?,?,?,?,?,?)",
       [first_name, last_name, cuit, team_id, join_date, rol]).spread((result) => result);
     return result
@@ -69,9 +66,24 @@ const updateEmployeeModel = async (user, values) => {
 
 //--ELIMINAR EMPLEADO--
 const deleteEmployeeModel = async (id) => {
+  const asset = model.getEmployeeByIdModel(id)
+  //Si el empleado no tiene assets entonces elimina al empleado
+  //En caso de tener  primero debemos sacar la referencia de asset con employee
+  //para eso realizaremos primero un update de los asset y luego eliminaremos al empleado
+  // if(!asset){
+  //   await conection
+  //     .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
+  //     .spread((result) => result);
+  // }else{
+  //   await conection.query("UPDATE asset SET employeeid = NULL WHERE employeeid = ?",[id])
+  //   await conection
+  //     .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
+  //     .spread((result) => result);
+  // }
+
   await conection
-    .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
-    .spread((result) => result);
+      .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
+      .spread((result) => result);
 };
 
 module.exports = {

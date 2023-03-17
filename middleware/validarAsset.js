@@ -15,7 +15,7 @@ const validar_asset = [
     check("marca").optional(),
     check("purchase_date").notEmpty().withMessage("la fecha de compra es obligatorio"),
     check("description").optional(),
-    check("employeeid").isInt().withMessage("El id debe ser numerico")
+    // check("employeeid").optional
   ];
 
   module.exports = validar_asset
