@@ -52,7 +52,7 @@ dotenv
 
 ## Variables de entorno
 
-Pra una buena ejecucion del proyecto, debe crear un archivo .nv en el index del proyecto
+Pra una buena ejecucion del proyecto, debe crear un archivo .env en el index del proyecto
 
 `DB_HOST` --> url del host de database
 
