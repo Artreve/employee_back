@@ -67,20 +67,6 @@ const updateEmployeeModel = async (user, values) => {
 //--ELIMINAR EMPLEADO--
 const deleteEmployeeModel = async (id) => {
   const asset = model.getEmployeeByIdModel(id)
-  //Si el empleado no tiene assets entonces elimina al empleado
-  //En caso de tener  primero debemos sacar la referencia de asset con employee
-  //para eso realizaremos primero un update de los asset y luego eliminaremos al empleado
-  // if(!asset){
-  //   await conection
-  //     .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
-  //     .spread((result) => result);
-  // }else{
-  //   await conection.query("UPDATE asset SET employeeid = NULL WHERE employeeid = ?",[id])
-  //   await conection
-  //     .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
-  //     .spread((result) => result);
-  // }
-
   await conection
       .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
       .spread((result) => result);
