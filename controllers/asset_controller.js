@@ -1,4 +1,5 @@
 const model = require("../models/asset");
+const {validationResult} = require("express-validator")
 
 const NotFoundError = require("../errors/NotFoundError");
 
