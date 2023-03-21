@@ -1,16 +1,19 @@
 const model = require("../models/employee");
 const {validationResult} = require("express-validator")
 
-// const {validarSolicitud} = require("../middleware/validarEmployee")
 const NotFoundError = require("../errors/NotFoundError")
 
 
 //--FILTRAO GENERAL--
 const getAllEmployees = async (req, res, next) => {
-  const values = req.query;
-  const empleados = await model.getAllEmployeesModel(values);
+  try {
+    const values = req.query;
+    const empleados = await model.getAllEmployeesModel(values);
+    res.json({ data: empleados });
+  } catch (error) {
+    next(error)
+  }
 
-  res.json({ data: empleados });
 };
 
 //--TRAER EMPLEADO POR SU ID--
@@ -26,7 +29,7 @@ const getEmployeesById = async (req, res, next) => {
 };
 
 //--CREAR EMPLEADO--
-const createEmployee = async (req, res) => {
+const createEmployee = async (req, res, next) => {
 
   //Validacion de resultados de express validator: Me surgian muchos errores mandando a un archivo aparte
   const errors = validationResult(req);
@@ -39,7 +42,7 @@ const createEmployee = async (req, res) => {
     const result = await model.createEmployeeModel(values);
     res.json({ data: result, messaje: "Usuario Creado" });
   } catch (error) {
-    new HttpError("Algo salio mal", 500);
+    next(error);
   }
 };
 
@@ -60,7 +63,6 @@ const updateEmployee = async (req, res, next) => {
     const result = await model.updateEmployeeModel(user,values)
     res.json({result, messaje: `El usuario con el id ${userId} se actualizó exitosamente`})
   } catch (error) {
-    console.log(error)
     next(error);
   }
 };
