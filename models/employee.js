@@ -2,7 +2,7 @@ const conection = require("../database/dbConfig");
 const model = require("./asset");
 
 //--FILTRAO GENERAL--
-const getAllEmployeesModel = (values) => {
+const getAllEmployeesModel = async (values) => {
   const { first_name, last_name, team_id, page = 1, pageSize = 5 } = values;
   const filters = [];
   const valueSql = [];
@@ -25,15 +25,7 @@ const getAllEmployeesModel = (values) => {
   }
 
   query += limitQuery;
-  const rows = conection.query(query, valueSql).spread((rows) => rows);
-  return rows;
-};
-
-//--TRAER EMPLEADO POR SU ID--
-const getEmployeeByIdModel = async (id) => {
-  const row = await conection
-    .query("SELECT * FROM employee WHERE idemployee = ?", [id])
-    .spread((row) => row);
+  const rows = await conection.query(query, valueSql).spread((rows) => rows);
   //Contar la cantidad de paginas.
   const [totalRows] = await conection.query(
     "SELECT COUNT (*) AS total FROM employee"
@@ -41,6 +33,14 @@ const getEmployeeByIdModel = async (id) => {
   const total = totalRows[0].total;
   const pages = Math.ceil(total / pageSize);
   console.log(pages);
+  return {num_pages: pages, rows};
+};
+
+//--TRAER EMPLEADO POR SU ID--
+const getEmployeeByIdModel = async (id) => {
+  const row = await conection
+    .query("SELECT * FROM employee WHERE idemployee = ?", [id])
+    .spread((row) => row);
   return row.length > 0 ? row[0] : null;
 };
 
@@ -79,7 +79,7 @@ const updateEmployeeModel = async (user, values) => {
 
 //--ELIMINAR EMPLEADO--
 const deleteEmployeeModel = async (id) => {
-  const asset = model.getEmployeeByIdModel(id);
+  const asset = model.getAssetByEmployeeIdModel(id);
   //Si el empleado no tiene assets entonces elimina al empleado
   //En caso de tener  primero debemos sacar la referencia de asset con employee
   //para eso realizaremos primero un update de los asset y luego eliminaremos al empleado

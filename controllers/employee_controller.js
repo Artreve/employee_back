@@ -72,7 +72,6 @@ const deleteEmployee = async (req, res,next) => {
   try {
     const userId = req.params.id;
     const user = await model.getEmployeeByIdModel(userId);
-    console.log(user)
     if (!user) throw new NotFoundError('El empleado no existe');
     await model.deleteEmployeeModel(userId);
     res.json({ messaje: `Usuario con el Id: ${userId} eliminado` });
