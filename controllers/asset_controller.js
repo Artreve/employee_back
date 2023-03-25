@@ -1,24 +1,30 @@
 const model = require("../models/asset");
+const { validationResult } = require("express-validator");
 
 const NotFoundError = require("../errors/NotFoundError");
 
 //--FILTRAO GENERAL--
-const getAllAssets = async (req, res) => {
-  const assets = await model.getAllAssetsModel();
-
-  res.json({ data: assets });
-};
-
-const getAssetByEmployeeId = async (req, res, next) => {
+const getAllAssets = async (req, res, next) => {
   try {
-  const userId = req.params.id;
-  const assets = await model.getAssetByEmployeeIdModel(userId);
-  if (!assets) throw new NotFoundError("No hay articulos asignados a este empleado")
-  res.json({ data: assets });
+    const assets = await model.getAllAssetsModel();
+    res.json({ data: assets });
   } catch (error) {
     next(error)
   }
-  
+};
+
+// --TRAER ASSETS POR IDEMPLOYEE--
+const getAssetByEmployeeId = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    //VALIDAR EMPLEADO
+    const assets = await model.getAssetByEmployeeIdModel(userId);
+    if (!assets)
+      throw new NotFoundError("No hay articulos asignados a este empleado");
+    res.json({ data: assets });
+  } catch (error) {
+    next(error);
+  }
 };
 
 //--TRAER ASSET POR SU ID--
@@ -50,8 +56,8 @@ const createAsset = async (req, res) => {
   }
 };
 
-//--ACTUALIZAR EMPLEADO--
-const updateAsset = async (req, res,next) => {
+//--ACTUALIZAR ASSET--
+const updateAsset = async (req, res, next) => {
   try {
     const assetId = req.params.id;
     const asset = await model.getAssetByIdModel(assetId);
@@ -67,7 +73,7 @@ const updateAsset = async (req, res,next) => {
   }
 };
 
-//--ELIMINAR EMPLEADO--
+//--ELIMINAR ASSET--
 const deleteAseet = async (req, res, next) => {
   try {
     const assetId = req.params.id;
