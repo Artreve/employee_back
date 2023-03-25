@@ -61,7 +61,7 @@ const updateEmployee = async (req, res, next) => {
     if (!user) throw new NotFoundError('El empleado no existe'); //validacion
     const values = {...req.body}; //valores nuevos del empleado
     const result = await model.updateEmployeeModel(user,values)
-    res.json({result, messaje: `El usuario con el id ${userId} se actualizó exitosamente`})
+    res.json({result, message: `El usuario con el id ${userId} se actualizó exitosamente`})
   } catch (error) {
     next(error);
   }
@@ -74,7 +74,7 @@ const deleteEmployee = async (req, res,next) => {
     const user = await model.getEmployeeByIdModel(userId);
     if (!user) throw new NotFoundError('El empleado no existe');
     await model.deleteEmployeeModel(userId);
-    res.json({ messaje: `Usuario con el Id: ${userId} eliminado` });
+    res.json({message: `Usuario con el Id: ${userId} eliminado` });
   } catch (error) {
     next(error);
   }

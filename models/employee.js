@@ -32,7 +32,6 @@ const getAllEmployeesModel = async (values) => {
   );
   const total = totalRows[0].total;
   const pages = Math.ceil(total / pageSize);
-  console.log(pages);
   return {num_pages: pages, rows};
 };
 
@@ -59,7 +58,7 @@ const createEmployeeModel = async (values) => {
 //--ACTUALIZAR EMPLEADO--
 
 //de la busqueda que realice en el controller, debo ingresarlo aqui
-//user: valores viejos y values: valores nuevos
+//user: valores viejos | values: valores nuevos
 const updateEmployeeModel = async (user, values) => {
   const { first_name, last_name, cuit, team_id, join_date, rol } = values;
   const sql = `UPDATE employee SET first_name=?, last_name=?, cuit=?, team_id=?, join_date=?, rol=? WHERE idemployee=${user.idemployee}`;
@@ -93,10 +92,6 @@ const deleteEmployeeModel = async (id) => {
       .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
       .spread((result) => result);
   }
-
-  // await conection
-  //   .query("DELETE FROM employee WHERE IDEMPLOYEE = ?", [id])
-  //   .spread((result) => result);
 };
 
 module.exports = {
